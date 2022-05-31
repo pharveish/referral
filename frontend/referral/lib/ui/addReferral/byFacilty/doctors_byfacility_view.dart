@@ -5,9 +5,9 @@ import 'package:referral/ui/home/home_view.dart';
 import 'package:stacked/stacked.dart';
 
 class DoctorByFacilityView extends StatelessWidget {
-	static route ({user, doctorList, referral}) => MaterialPageRoute(builder: (context)=> DoctorByFacilityView (user: user, doctorList:doctorList, referral: referral));
-	final user, doctorList, referral;
-	DoctorByFacilityView  ({this.user, this.doctorList, this.referral});
+	static route ({user, doctorList, referral, isDelegate}) => MaterialPageRoute(builder: (context)=> DoctorByFacilityView (user: user, doctorList:doctorList, referral: referral, isDelegate: isDelegate));
+	final user, doctorList, referral, isDelegate;
+	DoctorByFacilityView  ({this.user, this.doctorList, this.referral, this.isDelegate});
 	@override
 	Widget build(BuildContext context) {
 		return ViewModelBuilder<FacilityListViewModel>.reactive(
@@ -162,11 +162,18 @@ class DoctorByFacilityView extends StatelessWidget {
 																),
 																trailing: InkWell(
 																		onTap: ()async{
-																			if(referral==null){
+																			if(referral==null && isDelegate==false){
 																			Navigator.push(context, MaterialPageRoute(builder: (context)=> PatientInfoView(user: user, doctor: doctorList[index])));
-																			} else{
+																			} else if(isDelegate==false){
 																				await viewmodel.reassign(referral.id, doctorList[index].id);
 																			Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeView(user: user )));
+																			}
+																			else if(isDelegate==true){
+																				print("delegate function");
+																				print(user.id);
+																				print(doctorList[index].id);
+																				await viewmodel.addToDelegate(user.id, doctorList[index].id);
+																				Navigator.pop(context);
 																			}
 																		},
 																		child:Icon(Icons.keyboard_arrow_right),),

@@ -3,6 +3,7 @@ import 'package:patient/ui/components/constants.dart';
 import 'package:patient/ui/home/history/history_view.dart';
 import 'package:patient/ui/home/home_viewmodel.dart';
 import 'package:patient/ui/home/pending/pending_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {
@@ -21,6 +22,29 @@ class HomeView extends StatelessWidget {
 									automaticallyImplyLeading: false,
 									toolbarHeight: 100.0,
 									title: const Text("     Referrals", style: TextStyle(color: Colors.black)),
+									actions:[
+										PopupMenuButton(
+												icon:Icon(Icons.more_vert, color: Colors.black),
+												itemBuilder: (context){
+													return [
+														PopupMenuItem(
+																value:0,
+																child: Text('Logout'))	
+													];
+												},
+												onSelected:(value)async{
+													if(value==0){
+														SharedPreferences preferences = await SharedPreferences.getInstance();
+														await preferences.clear();
+																//await viewmodel.removeToken(user.id);
+																Navigator.pushNamedAndRemoveUntil(
+																		context, '/', ModalRoute.withName('/'),
+																		);
+																}
+													}
+												
+												)
+									],
 									bottom: PreferredSize(
 											preferredSize: Size.fromHeight(50),
 											child: Container(

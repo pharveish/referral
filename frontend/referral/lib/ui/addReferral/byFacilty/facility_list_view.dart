@@ -80,9 +80,9 @@ class FacilityListView extends StatelessWidget {
 																									onTap: ()async{
 																										 await viewmodel.filterHospital(viewmodel.hospitalList[index]);
 																										 if(referral==null){
-																												Navigator.push(context, MaterialPageRoute(builder: (context)=> DoctorByFacilityView(user: user, doctorList: viewmodel.doctorList)));
+																												Navigator.push(context, MaterialPageRoute(builder: (context)=> DoctorByFacilityView(user: user, doctorList: viewmodel.doctorList, isDelegate: false)));
 																										 } else{
-																												Navigator.push(context, MaterialPageRoute(builder: (context)=> DoctorByFacilityView(user: user, doctorList: viewmodel.doctorList, referral:referral)));
+																												Navigator.push(context, MaterialPageRoute(builder: (context)=> DoctorByFacilityView(user: user, doctorList: viewmodel.doctorList, referral:referral, isDelegate: false)));
 
 																										 }
 

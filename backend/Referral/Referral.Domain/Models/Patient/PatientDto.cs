@@ -7,6 +7,7 @@ namespace Referral.Domain.Models.Patient
         public string Username { get; set; }
         
         public string Password { get; set; }
+        public string FbToken { get; set; } 
         
         public string PatientName { get; set; }
         

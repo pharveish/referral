@@ -73,8 +73,20 @@ namespace Referral.Controllers.Referral
         [HttpPut("completeCase/{id}")]
         public async Task<IActionResult> CompleteCase(int id, [FromBody] ReferralDto input)
         {
-            ReferralDto referral = await _referralService.CompleteCase(id, input);
-            return Ok(referral);
+            ReferralDto referralDto = await _referralService.CompleteCase(id, input);
+            Domain.Domain.Referral.Referral referral = await _referralService.GetReferralObjectById(id);
+            var message = new Message()
+            {
+            Notification = new Notification
+            {
+                Title = "Case Complete",
+                Body = "Your referral to "+referral.ReferredTo.Name+" on "+referral.ReferralDate+" has been completed."
+            },
+            Token = referral.ReferredFrom.FbToken
+            };
+            var messaging = FirebaseMessaging.DefaultInstance;
+            var result = await messaging.SendAsync(message);
+            return Ok(referralDto);
         }
         
         // [HttpPut("delegate/{id}")]
@@ -87,8 +99,20 @@ namespace Referral.Controllers.Referral
         [HttpPut("reassign/{id}")]
         public async Task<IActionResult> Reassign(int id, [FromBody] ReferralDto input)
         {
-            ReferralDto referral = await _referralService.Reassign(id, input);
-            return Ok(referral);
+            ReferralDto referralDto = await _referralService.Reassign(id, input);
+            Domain.Domain.Referral.Referral referral = await _referralService.GetReferralObjectById(id);
+            var message = new Message()
+            {
+            Notification = new Notification
+            {
+                Title = "A referral has been reassigned to you",
+                Body = "A referral from "+referral.ReferredFrom.Name+" on "+referral.ReferralDate+" has been reassigned to you."
+            },
+            Token = referral.ReferredTo.FbToken
+            };
+            var messaging = FirebaseMessaging.DefaultInstance;
+            var result = await messaging.SendAsync(message);
+            return Ok(referralDto);
         }
         
         [HttpPut("abort/{id}")]
@@ -101,8 +125,20 @@ namespace Referral.Controllers.Referral
         [HttpPut("setAppointment/{id}")]
         public async Task<IActionResult> SetAppointment(int id, [FromBody] ReferralDto input)
         {
-            ReferralDto referral = await _referralService.SetAppointment(id, input);
-            return Ok(referral);
+            ReferralDto referralDto = await _referralService.SetAppointment(id, input);
+            Domain.Domain.Referral.Referral referral = await _referralService.GetReferralObjectById(id);
+            var message = new Message()
+            {
+            Notification = new Notification
+            {
+                Title = "Referral Accepted",
+                Body = "Your referral to "+referral.ReferredTo.Name+" on "+referral.ReferralDate+" has been accepted. The appointment date is on "+referral.AppointmentDate+" ."
+            },
+            Token = referral.ReferredFrom.FbToken
+            };
+            var messaging = FirebaseMessaging.DefaultInstance;
+            var result = await messaging.SendAsync(message);
+            return Ok(referralDto);
         }
 
         [HttpGet("referredToId/{id}")]

@@ -12,6 +12,8 @@ namespace Referral.Domain.Models.Patient
         
         public string Nric { get; set; }
         
+        public string FbToken { get; set; }
+        
         public string Gender { get; set; }
         
         public string HomeNo { get; set; }
@@ -29,6 +31,7 @@ namespace Referral.Domain.Models.Patient
             Id = patient.Id;
             Username = patient.Username;
             Password = patient.Password;
+            FbToken = patient.FbToken;
             Email = patient.Email;
             PatientName = patient.PatientName;
             Nric = patient.Nric;

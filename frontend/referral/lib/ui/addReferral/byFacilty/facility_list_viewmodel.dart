@@ -1,6 +1,7 @@
 import 'package:referral/app/dependencies.dart';
 import 'package:referral/model/doctor.dart';
 import 'package:referral/model/referral.dart';
+import 'package:referral/services/delegate/delegate_service.dart';
 import 'package:referral/services/doctor/doctor_service.dart';
 import 'package:referral/services/referral/referral_service.dart';
 import 'package:stacked/stacked.dart';
@@ -12,6 +13,7 @@ class FacilityListViewModel extends BaseViewModel{
 
 	DoctorService get _service => dependency();
 	ReferralService get _serviceRef => dependency();
+	DelegateService get _serviceDel => dependency();
 
 	List<Doctor> doctorList = [];
 	List<Doctor> filteredList=[];
@@ -22,6 +24,12 @@ class FacilityListViewModel extends BaseViewModel{
 	}
 
 	Referral referral;
+
+	void addToDelegate(delegateFromId, delegateToId)async{
+		await _serviceDel.addToDelegates(delegateFromId, delegateToId);
+		print("delegating");
+		notifyListeners();
+	}
 
 	void reassign(id, doctorToId)async{
 		referral = await _serviceRef.reassign(id, doctorToId);

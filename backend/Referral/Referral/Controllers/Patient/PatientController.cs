@@ -37,6 +37,13 @@ namespace Referral.Controllers.Patient
                return patient;
            }
            
+        [HttpPut("bindToken/{id}")]
+        public async Task<IActionResult> BindToken(int id, [FromBody] PatientDto input)
+        {
+            PatientDto patient = await _patientService.BindToken(id, input);
+            return Ok(patient);
+        }
+           
        [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestPatient input)
         {

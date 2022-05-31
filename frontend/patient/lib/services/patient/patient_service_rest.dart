@@ -20,4 +20,10 @@ class PatientServiceRest implements PatientService{
 					return loggedInUser;
 				}
 			}
+	Future<Patient> getPatientDetails(String nric) async{
+		final Map<String, dynamic> patientDetails = await rest.get('api/Patient/nric/$nric');
+		if(patientDetails==null){
+			return null;
+		} else return Patient.fromJson(patientDetails);
+	}
 }

@@ -51,6 +51,15 @@ namespace Referral.Domain.Services.Patient
             return await _rContext.Patients.AsQueryable().ProjectToType<PatientDto>().ToListAsync();
         }
         
+        public async Task<PatientDto> BindToken(int id, PatientDto input)
+        {
+            Domain.Patient.Patient patient = await _rContext.Patients.FirstOrDefaultAsync(x => x.Id == id);
+            patient.FbToken = input.FbToken;
+            _rContext.Patients.Update(patient);
+            await _rContext.SaveChangesAsync();
+            return patient.Adapt<PatientDto>();
+        }
+        
         public async Task<PatientDto> GetPatientByNric(string nric)
         {
             return await _rContext.Patients.AsQueryable().Where(x=> x.Nric==nric).ProjectToType<PatientDto>().SingleOrDefaultAsync();

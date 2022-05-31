@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Referral.Domain.Context;
 
@@ -11,9 +12,10 @@ using Referral.Domain.Context;
 namespace Referral.Domain.Migrations
 {
     [DbContext(typeof(RContext))]
-    partial class RContextModelSnapshot : ModelSnapshot
+    [Migration("20220531191915_patienttoken")]
+    partial class patienttoken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

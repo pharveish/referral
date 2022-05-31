@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:referral/ui/addReferral/category/category_view.dart';
 import 'package:referral/ui/completeCase/complete_view.dart';
+import 'package:referral/ui/delegate/your_delegate_view.dart';
 import 'package:referral/ui/home/tabviews/referredin/referredin_viewmodel.dart';
 import 'package:referral/ui/viewReferral/patientInfo_view.dart';
 import 'package:stacked/stacked.dart';
@@ -184,12 +185,20 @@ class ReferredInView extends StatelessWidget {
 																																																						 PopupMenuItem(
 																																																								 value:1,
 																																																								 child: Text('Referral Reply', style:TextStyle(color:Colors.black38))),	
+																																																						 PopupMenuItem(
+																																																								 value:2,
+																																																								 child: Text('Delegate')),	
 																																																					 ];
 																																																				 },
 																																																				 onSelected:(value)async{
 																																																					 if(value==0){
 																																																							await viewmodel.getReferralById(referrals[index].id);
 																																																							Navigator.push(context, MaterialPageRoute(builder: (context)=> CategoryView(user: user, referral: viewmodel.referral, )));
+
+																																																					 }
+																																																					 if(value==2){
+																																																							await viewmodel.getReferralById(referrals[index].id);
+																																																							Navigator.push(context, MaterialPageRoute(builder: (context)=> YourDelegateView(user: user, referral: viewmodel.referral, )));
 
 																																																					 }
 																																																				 }

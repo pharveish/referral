@@ -2,6 +2,7 @@
 import 'package:patient/app/dependencies.dart';
 import 'package:patient/model/patient.dart';
 import 'package:patient/services/patient/patient_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginViewModel extends BaseViewModel{
@@ -33,7 +34,8 @@ class LoginViewModel extends BaseViewModel{
 		if(user==null){
 			return null;
 		} else {
-			print("LOGIN SUCCESS BROSKI");
+			SharedPreferences preferences = await SharedPreferences.getInstance();
+			preferences.setString('nric',user.nric);
 			return user;
 		}
 	}

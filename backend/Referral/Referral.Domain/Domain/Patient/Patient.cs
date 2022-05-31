@@ -4,6 +4,7 @@ namespace Referral.Domain.Domain.Patient
     {
         public int Id { get; set; }
         
+        public string FbToken { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string PatientName { get; set; }
