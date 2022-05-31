@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Referral.Domain.Helpers;
+using Referral.Domain.Services.Delegate;
 using Referral.Domain.Services.Doctors;
 using Referral.Domain.Services.Patient;
 using Referral.Domain.Services.Referral;
@@ -30,6 +31,7 @@ builder.Services.AddSingleton(new PasswordHasher());
 builder.Services.AddScoped<DoctorService>(); 
 builder.Services.AddScoped<ReferralService>(); 
 builder.Services.AddScoped<PatientService>(); 
+builder.Services.AddScoped<DelegateService>(); 
 //builder.Services.AddScoped<PushNotification>(); 
 
 
