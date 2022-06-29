@@ -1,5 +1,5 @@
 class Document {
-  int id;
+  String id;
   String fileName;
   String contentType;
   String fileSize;

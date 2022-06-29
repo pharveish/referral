@@ -150,11 +150,11 @@ namespace Referral.Domain.Services.Referral
                         DoctorToName = x.ReferredTo.Name,
                         PatientName = x.Patient.PatientName,
                         ReferToHospital= x.ReferredFrom.Hospital,
-                        // x.DelegateId,
-                        // DelegateToId = x.Delegate.DelegateTo.Id,
-                        // DelegateToName = x.Delegate.DelegateTo.Name,
-                        // DelegateFromId = x.Delegate.DelegateFrom.Id,
-                        // DelegateFromName = x.Delegate.DelegateFrom.Name,
+                         // x.DelegateId,
+                         // DelegateToId = x.Delegate.DelegateTo.Id,
+                         // DelegateToName = x.Delegate.DelegateTo.Name,
+                         // DelegateFromId = x.Delegate.DelegateFrom.Id,
+                         // DelegateFromName = x.Delegate.DelegateFrom.Name,
                         PatientIc = x.Patient.Nric,
                         PatientGender = x.Patient.Gender,
                         PatientHomeNo = x.Patient.HomeNo,
@@ -218,7 +218,11 @@ namespace Referral.Domain.Services.Referral
 
         public async Task<List<DateTime>> GetReferredToDatesByDoctorId(int id)
         {
-            return await _rContext.Referrals.AsQueryable().Where(x=>x.DoctorToId==id).Select(x => x.ReferralDate.Date).Distinct().ToListAsync();
+            return await _rContext.Referrals.AsQueryable().Where(x=>x.DoctorToId==id && x.ReferralDate >= currenteDate).Select(x => x.ReferralDate.Date).Distinct().ToListAsync();
+        }
+        public async Task<List<DateTime>> GetReferredToDatesHistoryByDoctorId(int id)
+        {
+            return await _rContext.Referrals.AsQueryable().Where(x=>x.DoctorToId==id || x.DoctorFromId == id).Select(x => x.ReferralDate.Date).Distinct().ToListAsync();
         }
         
         public async Task<List<DateTime>> GetReferredToDatesByPatientId(int id)
@@ -266,6 +270,40 @@ namespace Referral.Domain.Services.Referral
 
                     })
                 .Where(x => x.DoctorFromId==id && x.ReferralDate.Date == date.Date)
+                .ProjectToType<ReferralDto>()
+                .ToListAsync();
+        }
+        
+        public async Task<List<ReferralDto>> GetReferralHistoryByDate(int id, DateTime date)
+        {
+            return await _rContext.Referrals.AsQueryable()
+                .Select(x =>
+                    new
+                    {
+                        x.Id,
+                        x.Reason,
+                        x.DoctorToId,
+                        x.DoctorFromId,
+                        referToHospital=x.ReferredFrom.Hospital,
+                        x.ReferralDate,
+                        x.Patient.PatientName,
+                        PatientIc=x.Patient.Nric,
+                        //x.DelegateId,
+                        // DelegateToId = x.Delegate.DelegateTo.Id,
+                        // DelegateToName = x.Delegate.DelegateTo.Name,
+                        // DelegateFromId = x.Delegate.DelegateFrom.Id,
+                        // DelegateFromName = x.Delegate.DelegateFrom.Name,
+                        DoctorToName = x.ReferredTo.Name,
+                        Status = x.Status,
+                        RejectionRemark = x.RejectionRemark,
+                        AppointmentDate = x.AppointmentDate,
+                        x.CompletionMessage,
+                        x.RadiologyExam,
+                        x.LaboratoryTest,
+                        x.FollowUp,
+
+                    })
+                .Where(x => x.DoctorFromId==id || x.DoctorToId ==id && x.ReferralDate.Date == date.Date)
                 .ProjectToType<ReferralDto>()
                 .ToListAsync();
         }
@@ -400,11 +438,13 @@ namespace Referral.Domain.Services.Referral
                         Directory.CreateDirectory(_environment.WebRootPath + $"/Upload/Completed/{referralId}/");
                     }
 
+                    Guid id = Guid.NewGuid();
                     using (FileStream fileStream =
-                        System.IO.File.Create(_environment.WebRootPath + $"/Upload/Completed/{referralId}/" + fileName+System.IO.Path.GetExtension(objFile.files.FileName)))
+                        System.IO.File.Create(_environment.WebRootPath + $"/Upload/Completed/{referralId}/" + id))
                         //System.IO.File.Create(_environment.WebRootPath + "/Upload/" + objFile.files.FileName))
                     {
                         document = new CompletedDocument();
+                        document.Id = id;
                         document.FileName = fileName+System.IO.Path.GetExtension(objFile.files.FileName);
                         document.ContentType = objFile.files.ContentType;
                         document.FileSize = objFile.files.Length;
@@ -468,7 +508,7 @@ namespace Referral.Domain.Services.Referral
             }
         }
 
-        public async Task<CompletedDocument> getCompletedDocumentToDownload(int id)
+        public async Task<CompletedDocument> getCompletedDocumentToDownload(Guid id)
         {
             var document = await _rContext.CompletedDocuments.FindAsync(id);
             return document;

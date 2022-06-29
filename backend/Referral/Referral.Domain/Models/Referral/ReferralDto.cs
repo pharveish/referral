@@ -15,9 +15,9 @@ namespace Referral.Domain.Models.Referral
         public int DoctorToId { get; set; } 
         public string DoctorToName { get; set; } 
         
-        // public int DelegateId { get; set; } 
-        // public string DelegateToName { get; set; } 
-        // public int DelegateFromName { get; set; } 
+         // public int DelegateId { get; set; } 
+         // public string DelegateToName { get; set; } 
+         // public string DelegateFromName { get; set; } 
         public int PatientId { get; set; } 
         public string ReferToHospital { get; set; } 
         public string PatientName { get; set; } 

@@ -2,6 +2,8 @@ import 'package:referral/model/referral.dart';
 
 abstract class ReferralService{
 	Future<List> listDates(int id);
+	Future<List> listHistoryDates(int id);
+	Future<List<Referral>> listHistoryByDates(int id, String date);
 	Future<List<Referral>> listReferralByDates(int id, String date);
 	Future<List> listOutgoingDates(int id);
 	Future<List<Referral>> listOutgoingReferralByDates(int id, String date);
@@ -12,4 +14,6 @@ abstract class ReferralService{
 	Future<Referral> reassign(int id, int doctorToId);
 	Future<Referral> setAppointment(int id, String appointmentDate);
 	Future<Referral> abort(int id);
+	Future<Referral> denyAppointment(int id);
+	Future<Referral> notification(int id);
 }

@@ -32,7 +32,7 @@ namespace Referral.Domain.Domain.Referral
         public virtual Doctor.Doctor ReferredFrom { get; set; } 
         
         [ForeignKey("Delegate")]
-        public int? DelegateId { get; set; } 
+        public int? DelegateId { get; set; }
         public virtual Delegate.Delegate Delegate{ get; set; } 
         
         [ForeignKey("ReferredTo")]

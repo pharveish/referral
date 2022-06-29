@@ -1,9 +1,11 @@
+using System;
+
 namespace Referral.Domain.Models.Document
 {
     public class CompletedDocumentDto
     {
         
-        public int Id { get; set; } 
+        public Guid Id { get; set; } 
         
         public string FileName { get; set; } 
         

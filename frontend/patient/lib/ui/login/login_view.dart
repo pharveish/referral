@@ -45,6 +45,7 @@ class LoginView extends StatelessWidget {
 													text: "LOGIN",
 													press: () async {
 														final Patient _user = await viewmodel.authenticate();
+														await viewmodel.bindToken(_user.id, viewmodel.token);
 														if (_user != null){
 															print("TRYING TO PRINT USER OBJECT");
 														print(_user);

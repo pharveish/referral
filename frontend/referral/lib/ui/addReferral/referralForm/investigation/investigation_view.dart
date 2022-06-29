@@ -223,6 +223,7 @@ class InvestigationView extends StatelessWidget {
 																																		//FileObject fileObj;
 																																		File selectedFile;
 																																		selectedFile= await FilePicker.getFile();
+																																		fileObj.fileName = selectedFile.path.split('/').last;
 																																		//print("TESTING");
 																																		//print(basename(selectedFile.path));
 																																		//fileObj.file = selectedFile;
@@ -298,8 +299,9 @@ class InvestigationView extends StatelessWidget {
 																													child: Container(
 																															width: double.infinity,
 																															child: ElevatedButton(
-																																	onPressed:(){
-																																		viewmodel.addReferral(diagnosis, notes, reason, clinicalHistory, patient.id, user.id, doctor.id, DateTime.now().toIso8601String(), viewmodel.radiologyExam, viewmodel.laboratoryTest, viewmodel.followUp);
+																																	onPressed:()async{
+																																		await viewmodel.addReferral(diagnosis, notes, reason, clinicalHistory, patient.id, user.id, doctor.id, DateTime.now().toIso8601String(), viewmodel.radiologyExam, viewmodel.laboratoryTest, viewmodel.followUp);
+																																		await viewmodel.notification();
 																																		//viewmodel.uploadFile(viewmodel.fileObjects[0]);
 																																		Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeView(user: user)));
 																																	},

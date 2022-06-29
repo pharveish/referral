@@ -1,10 +1,11 @@
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Referral.Domain.Domain.Document
 {
     public class CompletedDocument
     {
-        public int Id { get; set; } 
+        public Guid Id { get; set; } 
         
         public string FileName { get; set; } 
         

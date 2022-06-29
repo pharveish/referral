@@ -30,8 +30,8 @@ class CompleteCaseViewModel extends BaseViewModel{
 				"files": await MultipartFile.fromFile(fileObject.file.path, filename: fileName),
 			});
 
-			Response response = await Dio().post("http://192.168.118.219:5077/api/Referral/upload/completed/$id/${fileObject.fileName}",data: formData);
-			//Response response = await Dio().post("http://192.168.68.107:5077/api/Referral/upload/completed/$id/${fileObject.fileName}",data: formData);
+			//Response response = await Dio().post("https://referralapp.effronsoftware.com/api/Referral/upload/completed/$id/${fileObject.fileName}",data: formData);
+			Response response = await Dio().post("http://192.168.68.105:5077/api/Referral/upload/completed/$id/${fileObject.fileName}",data: formData);
 			print("File upload response: $response");
 		} catch (e) {
 			print("expectation Caugch: $e");

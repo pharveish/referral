@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Referral.Domain.Migrations
 {
-    public partial class docguid : Migration
+    public partial class guidcompleted : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,6 +39,7 @@ namespace Referral.Domain.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    FbToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PatientName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -136,8 +137,7 @@ namespace Referral.Domain.Migrations
                 name: "CompletedDocuments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileSize = table.Column<long>(type: "bigint", nullable: false),
@@ -182,8 +182,8 @@ namespace Referral.Domain.Migrations
 
             migrationBuilder.InsertData(
                 table: "Patients",
-                columns: new[] { "Id", "Address", "Email", "Gender", "HomeNo", "MobileNo", "Nric", "Password", "PatientName", "Username" },
-                values: new object[] { 1, "No 5, Jalan Laksamana 1/6, Taman Sutera Utama, 81200 Johor Bahru, Johor", "nadia@example.com", "Female", "07-4449921", "017-4449921", "001111-01-1213", "", "Nadia binti Ali", "" });
+                columns: new[] { "Id", "Address", "Email", "FbToken", "Gender", "HomeNo", "MobileNo", "Nric", "Password", "PatientName", "Username" },
+                values: new object[] { 1, "No 5, Jalan Laksamana 1/6, Taman Sutera Utama, 81200 Johor Bahru, Johor", "nadia@example.com", "", "Female", "07-4449921", "017-4449921", "001111-01-1213", "", "Nadia binti Ali", "" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompletedDocuments_ReferralId",

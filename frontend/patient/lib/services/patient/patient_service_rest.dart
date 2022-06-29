@@ -26,4 +26,12 @@ class PatientServiceRest implements PatientService{
 			return null;
 		} else return Patient.fromJson(patientDetails);
 	}
+
+	Future<Patient> bindToken(int id, String token) async {
+		final Map<String, dynamic> doctorJson = await rest.put('api/patient/bindToken/$id', data:{
+			"fbToken": token,
+		});
+		final Patient _patient = Patient.fromJson(doctorJson);
+		return _patient;
+	}
 }

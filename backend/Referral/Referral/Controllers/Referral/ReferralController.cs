@@ -29,8 +29,36 @@ namespace Referral.Controllers.Referral
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ReferralDto input)
         {
-            ReferralDto referral = await _referralService.AddReferral(input);
+            ReferralDto referralDto = await _referralService.AddReferral(input);
+            return Ok(referralDto);
+        }
+
+        [HttpPost("notification/{id}")]
+        public async Task<IActionResult> SendNotificationAfterCreateReferral(int id)
+        {
+            Domain.Domain.Referral.Referral referral = await _referralService.GetReferralObjectById(id);
+            var message = new Message()
+            {
+            Notification = new Notification
+            {
+                Title = "You have been referred!",
+                Body = "A referral from "+referral.ReferredFrom.Name+" to "+referral.ReferredTo.Name+" has been made."
+            },
+            Token = referral.Patient.FbToken
+            };
+            try
+            {
+
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification");
+            }
+
             return Ok(referral);
+
         }
 
         [HttpPut("reject/{id}")]
@@ -38,17 +66,43 @@ namespace Referral.Controllers.Referral
         {
             ReferralDto referralDto = await _referralService.RejectReferral(id, input);
             Domain.Domain.Referral.Referral referral = await _referralService.GetReferralObjectById(id);
+            var messagePatient = new Message()
+            {
+            Notification = new Notification
+            {
+                Title = "Referral Rejected",
+                Body = "Your referral to "+referral.ReferredTo.Name+" on "+referral.ReferralDate+" has been rejected."
+            },
+            Token = referral.Patient.FbToken
+            };
+            
             var message = new Message()
             {
             Notification = new Notification
             {
-                Title = "Appointment Rejected",
+                Title = "Referral Rejected",
                 Body = "Your referral to "+referral.ReferredTo.Name+" on "+referral.ReferralDate+" has been rejected."
             },
             Token = referral.ReferredFrom.FbToken
             };
-            var messaging = FirebaseMessaging.DefaultInstance;
-            var result = await messaging.SendAsync(message);
+            try
+            {
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification to doctor");
+            }
+            try
+            {
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var resultPatient = await messaging.SendAsync(messagePatient);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification to patient");
+            }
             return Ok(referralDto);
         }
         
@@ -65,8 +119,15 @@ namespace Referral.Controllers.Referral
             },
             Token = referral.ReferredTo.FbToken
             };
-            var messaging = FirebaseMessaging.DefaultInstance;
-            var result = await messaging.SendAsync(message);
+            try
+            {
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification to doctor");
+            }
             return Ok(referral);
         }
         
@@ -84,8 +145,15 @@ namespace Referral.Controllers.Referral
             },
             Token = referral.ReferredFrom.FbToken
             };
-            var messaging = FirebaseMessaging.DefaultInstance;
-            var result = await messaging.SendAsync(message);
+            try
+            {
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification to doctor");
+            }
             return Ok(referralDto);
         }
         
@@ -110,16 +178,44 @@ namespace Referral.Controllers.Referral
             },
             Token = referral.ReferredTo.FbToken
             };
-            var messaging = FirebaseMessaging.DefaultInstance;
-            var result = await messaging.SendAsync(message);
+            try
+            {
+
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification");
+            }
             return Ok(referralDto);
         }
         
         [HttpPut("abort/{id}")]
         public async Task<IActionResult> AbortCase(int id)
         {
-            ReferralDto referral = await _referralService.AbortCase(id);
-            return Ok(referral);
+            ReferralDto referralDto = await _referralService.AbortCase(id);
+            Domain.Domain.Referral.Referral referral = await _referralService.GetReferralObjectById(id);
+            var message = new Message()
+            {
+            Notification = new Notification
+            {
+                Title = "Referral Aborted",
+                Body = "A referral from "+referral.ReferredFrom.Name+" on "+referral.ReferralDate+" has been aborted."
+            },
+            Token = referral.Patient.FbToken
+            };
+            try
+            {
+
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification");
+            }
+            return Ok(referralDto);
         }
         
         [HttpPut("setAppointment/{id}")]
@@ -136,8 +232,35 @@ namespace Referral.Controllers.Referral
             },
             Token = referral.ReferredFrom.FbToken
             };
-            var messaging = FirebaseMessaging.DefaultInstance;
-            var result = await messaging.SendAsync(message);
+            try
+            {
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
+
+            }
+            catch 
+            {
+                Console.WriteLine("Failed to send notification");
+            }
+            var messagePatient = new Message()
+            {
+            Notification = new Notification
+            {
+                Title = "Referral Aborted",
+                Body = "A referral from "+referral.ReferredFrom.Name+" on "+referral.ReferralDate+" has been aborted."
+            },
+            Token = referral.Patient.FbToken
+            };
+            try
+            {
+
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(messagePatient);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send notification");
+            }
             return Ok(referralDto);
         }
 
@@ -183,6 +306,13 @@ namespace Referral.Controllers.Referral
             return dates;
         }
         
+        [HttpGet("datesHistory/{id}")]
+        public async Task<List<DateTime>> GetHistoryDates (int id)
+        {
+            List<DateTime> dates = await _referralService.GetReferredToDatesHistoryByDoctorId(id);
+            return dates;
+        }
+        
         [HttpGet("referralByDate/{id}/{date}")]
         public async Task<List<ReferralDto>> GetReferralsByDate (int id, DateTime date)
         {
@@ -190,6 +320,12 @@ namespace Referral.Controllers.Referral
             return referrals;
         }
         
+        [HttpGet("referralHistoryByDate/{id}/{date}")]
+        public async Task<List<ReferralDto>> GetReferralHistoryByDate (int id, DateTime date)
+        {
+            List<ReferralDto> referrals = await _referralService.GetReferralHistoryByDate(id,date);
+            return referrals;
+        }
         [HttpGet("referralByDateDoctorFrom/{id}/{date}")]
         public async Task<List<ReferralDto>> GetReferralsByDateDoctorFrom (int id, DateTime date)
         {
@@ -237,7 +373,7 @@ namespace Referral.Controllers.Referral
         
         
         [HttpGet("download/completed/{id}/{referralId}")]
-        public async Task<ActionResult> DownloadCompleted(int id, int referralId)
+        public async Task<ActionResult> DownloadCompleted(Guid id, int referralId)
         {
             var provider = new FileExtensionContentTypeProvider();
             var document = await _referralService.getCompletedDocumentToDownload(id);
@@ -245,7 +381,7 @@ namespace Referral.Controllers.Referral
             if (document == null)
                 return new NotFoundResult();
 
-            var file = Path.Combine(_environment.WebRootPath + $"/Upload/Completed/{referralId}/" + document.FileName);
+            var file = Path.Combine(_environment.WebRootPath + $"/Upload/Completed/{referralId}/" + document.Id);
             Console.WriteLine(file);
 
             string contentType;

@@ -275,7 +275,8 @@ class ReferralDetailsView extends StatelessWidget {
 																																					if(status.isGranted){
 																																						final externalDir = await getExternalStorageDirectory();
 																																						final id = await FlutterDownloader.enqueue(
-																																								url:"http://192.168.68.107:5077/api/Referral/download/${documents[index].id}/${referral.id}",
+																																								//url:"http://192.168.68.107:5077/api/Referral/download/${documents[index].id}/${referral.id}",
+																																								url:"https://referralapp.effronsoftware.com/api/Referral/download/${documents[index].id}/${referral.id}",
 																																								//url:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1280px-Image_created_with_a_mobile_phone.png",
 																																								savedDir: externalDir.path,
 																																								fileName: "${documents[index].fileName}",

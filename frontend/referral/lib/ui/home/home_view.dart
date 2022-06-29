@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:referral/ui/home/tabviews/history/history_view.dart';
 import 'package:referral/ui/home/tabviews/referredin/referredin_view.dart';
 import 'package:referral/ui/home/tabviews/referredout/referredout_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +15,7 @@ class HomeView extends StatelessWidget {
 		return ViewModelBuilder<HomeViewModel>.reactive(
 				builder: (context, viewmodel, child) =>
 				DefaultTabController(
-						length:2,
+						length:3,
 						child: Scaffold(
 							appBar: AppBar(
 									automaticallyImplyLeading: false,
@@ -72,7 +73,8 @@ class HomeView extends StatelessWidget {
 																unselectedLabelColor: Colors.black,
 																tabs: [
 																	Tab(text: 'Referred In'),
-																	Tab(text: 'Referred Out')
+																	Tab(text: 'Referred Out'),
+																	Tab(text: 'History')
 																]
 														),
 												),
@@ -82,6 +84,7 @@ class HomeView extends StatelessWidget {
 										body: TabBarView(children: [
 											ReferredInView(user:user),
 											ReferredOutView(user: user),
+											HistoryView(user: user),
 										]),						
 												),
 										), 

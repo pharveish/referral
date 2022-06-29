@@ -24,6 +24,12 @@ class ReferredInViewModel extends BaseViewModel {
 		print(dates);
 		return dates;
 	}
+	String appointmentDate="";
+
+	void setAppointment(int id, String appointmentDate) async {
+		 await _service.setAppointment(id, appointmentDate);
+		 notifyListeners();
+	}
 	Referral referral;
 	void getReferralById(int id) async{
 		referral = await _service.getReferralById(id);

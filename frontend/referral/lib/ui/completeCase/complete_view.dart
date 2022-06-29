@@ -298,8 +298,9 @@ class CompleteCaseView extends StatelessWidget {
 																																					if(status.isGranted){
 																																						final externalDir = await getExternalStorageDirectory();
 																																						final id = await FlutterDownloader.enqueue(
-																																								url:"http://192.168.118.219:5077/api/Referral/download/completed/${viewmodel.documents[index].id}/${referral.id}",
-																																								//url:"http://192.168.68.107:5077/api/Referral/download/completed/${viewmodel.documents[index].id}/${referral.id}",
+																																								//url:"http://192.168.118.219:5077/api/Referral/download/completed/${viewmodel.documents[index].id}/${referral.id}",
+																																								//url:"https://referralapp.effronsoftware.com/api/Referral/download/completed/${viewmodel.documents[index].id}/${referral.id}",
+																																								url:"http://192.168.68.105:5077/api/Referral/download/completed/${viewmodel.documents[index].id}/${referral.id}",
 																																								//url:"http://192.168.68.107:5077/api/Referral/download/${viewmodel.documents[index].id}/${referral.id}",
 																																								savedDir: externalDir.path,
 																																								fileName: "${viewmodel.documents[index].fileName}",

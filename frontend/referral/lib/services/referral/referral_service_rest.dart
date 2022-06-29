@@ -15,6 +15,16 @@ class ReferralServiceRest implements ReferralService{
 		return listJson;
 	}
 
+	Future<List> listHistoryDates(int id) async {
+		print("service starts");
+		final List listJson = await rest.get('api/Referral/datesHistory/$id');
+		print(listJson);
+		//print(listJson.map((json)=> Referral.fromJson(json)).toList());
+		//		return listJson.map((json)=> Referral.fromJson(json)).toList();
+		print('gonna return');
+		return listJson;
+	}
+
 	Future<List> listOutgoingDates(int id) async {
 		print("service starts");
 		final List listJson = await rest.get('api/Referral/datesOfReferredReferredFrom/$id');
@@ -25,6 +35,11 @@ class ReferralServiceRest implements ReferralService{
 		return listJson;
 	}
 
+	Future<List<Referral>> listHistoryByDates(int id, String date) async{
+		final List listJson = await rest.get('api/Referral/referralHistoryByDate/$id/$date');
+		print(listJson);
+		return listJson.map((json)=>Referral.fromJson(json)).toList();
+	}
 	Future<List<Referral>> listReferralByDates(int id, String date) async{
 		final List listJson = await rest.get('api/Referral/referralByDate/$id/$date');
 		print(listJson);
@@ -97,6 +112,18 @@ class ReferralServiceRest implements ReferralService{
 
 	Future<Referral> abort(int id) async {
 		final Map<String, dynamic> referralJson = await rest.put('api/Referral/abort/$id');
+
+		final Referral _referral = Referral.fromJson(referralJson);
+		return _referral;
+	}
+	Future<Referral> denyAppointment(int id) async {
+		final Map<String, dynamic> referralJson = await rest.put('api/Referral/denyAppointment/$id');
+
+		final Referral _referral = Referral.fromJson(referralJson);
+		return _referral;
+	}
+	Future<Referral> notification(int id) async {
+		final Map<String, dynamic> referralJson = await rest.post('api/Referral/notification/$id');
 
 		final Referral _referral = Referral.fromJson(referralJson);
 		return _referral;

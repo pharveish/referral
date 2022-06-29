@@ -48,11 +48,12 @@ class InvestigationViewModel extends BaseViewModel{
 			});
 
 			//Response response = await Dio().post("http://192.168.118.219:5077/api/Referral/upload/${referral.id}/${fileObject.fileName}",data: formData);
-			//Response response = await Dio().post("http://192.168.0.16:5077/api/Referral/upload/${referral.id}/${fileObject.fileName}",data: formData);
-			Response response = await Dio().post("https://referralapp.effronsoftware.com/api/Referral/upload/${referral.id}/${fileObject.fileName}",data: formData);
+			Response response = await Dio().post("http://192.168.68.105:5077/api/Referral/upload/${referral.id}/${fileObject.fileName}",data: formData);
+			//Response response = await Dio().post("https://referralapp.effronsoftware.com/api/Referral/upload/${referral.id}/${fileObject.fileName}",data: formData);
 			print("File upload response: $response");
 		} catch (e) {
-			print("expectation Caugch: $e");
+			print("FILE UPLOAD FAILED!!");
+			//print("expectation Caugch: $e");
 		}
 
 
@@ -81,6 +82,9 @@ class InvestigationViewModel extends BaseViewModel{
 		raf.writeFromSync(response.data);
 		await raf.close();
 		return file;
+	}
+	void notification()async{
+		await _service.notification(referral.id);
 	}
 
 

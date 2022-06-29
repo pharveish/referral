@@ -33,6 +33,12 @@ class ReferredOutViewModel extends BaseViewModel{
 		await _service.abort(id);
 		notifyListeners();
 	}
+	String appointmentDate="";
+
+	void setAppointment(int id, String appointmentDate) async {
+		 await _service.setAppointment(id, appointmentDate);
+		 notifyListeners();
+	}
 
 	List dateList = [];
 	List<Referral> referralList = [];

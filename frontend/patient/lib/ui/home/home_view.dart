@@ -36,7 +36,7 @@ class HomeView extends StatelessWidget {
 													if(value==0){
 														SharedPreferences preferences = await SharedPreferences.getInstance();
 														await preferences.clear();
-																//await viewmodel.removeToken(user.id);
+																await viewmodel.removeToken(user.id);
 																Navigator.pushNamedAndRemoveUntil(
 																		context, '/', ModalRoute.withName('/'),
 																		);

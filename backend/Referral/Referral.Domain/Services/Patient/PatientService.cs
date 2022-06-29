@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Referral.Domain.Context;
 using Referral.Domain.Helpers;
+using Referral.Domain.Models.Doctor;
 using Referral.Domain.Models.Patient;
 
 namespace Referral.Domain.Services.Patient
@@ -87,5 +88,6 @@ namespace Referral.Domain.Services.Patient
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+        
     }
 }

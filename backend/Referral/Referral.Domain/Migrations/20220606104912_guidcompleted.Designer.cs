@@ -12,8 +12,8 @@ using Referral.Domain.Context;
 namespace Referral.Domain.Migrations
 {
     [DbContext(typeof(RContext))]
-    [Migration("20220530095234_docguid")]
-    partial class docguid
+    [Migration("20220606104912_guidcompleted")]
+    partial class guidcompleted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,11 +119,9 @@ namespace Referral.Domain.Migrations
 
             modelBuilder.Entity("Referral.Domain.Domain.Document.CompletedDocument", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContentType")
                         .HasColumnType("nvarchar(max)");
@@ -183,6 +181,9 @@ namespace Referral.Domain.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FbToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
@@ -214,6 +215,7 @@ namespace Referral.Domain.Migrations
                             Id = 1,
                             Address = "No 5, Jalan Laksamana 1/6, Taman Sutera Utama, 81200 Johor Bahru, Johor",
                             Email = "nadia@example.com",
+                            FbToken = "",
                             Gender = "Female",
                             HomeNo = "07-4449921",
                             MobileNo = "017-4449921",

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:referral/ui/addReferral/category/category_view.dart';
 import 'package:referral/ui/completeCase/complete_view.dart';
@@ -212,9 +213,101 @@ class ReferredInView extends StatelessWidget {
 																																																																						 child:Text(referrals[index].status, textAlign: TextAlign.left, style: TextStyle(color: Colors.red[700], fontSize: 14)),
 																																																																				 ),
 																																																																			 if(referrals[index].status=="Appointment Denied")
-																																																																				 Container(
+																																																																				 Row(
+																																																																						 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+																																																																				   children: [
+																																																																				     Container(
 																																																																						 padding: EdgeInsets.only(top:15, bottom:15),
 																																																																						 child:Text(referrals[index].status, textAlign: TextAlign.left, style: TextStyle(color: Colors.red[700], fontSize: 14)),
+																																																																				     ),
+																																																										 ElevatedButton(onPressed: () async{ 
+																																																											 //await viewmodel.setAppointment(referrals[index].id);
+																																									showDialog(context: context, builder: (BuildContext context){
+																																										return Dialog(
+																																												child: Container(
+																																														padding: EdgeInsets.all(10),
+																																														height: 200,
+																																														child: Column(
+																																																mainAxisAlignment: MainAxisAlignment.spaceBetween,
+																																																children: [
+																																																	Align(
+																																																			alignment: Alignment.topLeft,
+																																																			child:Text("Reschedule Appointment",style:TextStyle(fontSize: 15, color: Colors.pink),textAlign: TextAlign.left,),
+																																																	),
+																																																	DateTimePicker(
+																																																			type: DateTimePickerType.dateTimeSeparate,
+																																																			dateMask: 'd MMM, yyyy',
+																																																			initialValue: DateTime.now().toString(),
+																																																			firstDate: DateTime(2000),
+																																																			lastDate: DateTime(2100),
+																																																			icon: Icon(Icons.event),
+																																																			dateLabelText: 'Date',
+																																																			timeLabelText: "Time",
+																																																			//selectableDayPredicate: (date) {
+																																																			//	// Disable weekend days to select from the calendar
+																																																			//	if (date.weekday == 6 || date.weekday == 7) {
+																																																			//		return false;
+																																																			//	}
+
+																																																			//	return true;
+																																																			//},
+																																																			onChanged: (val)  {
+																																																				//print(val);
+																																																				print(DateTime.parse(val).toIso8601String());
+																																																				viewmodel.appointmentDate=DateTime.parse(val).toIso8601String();
+																																																			},
+																																																			validator: (val) {
+																																																				//print(val);
+																																																				print(DateTime.parse(val).toIso8601String());
+																																																				viewmodel.appointmentDate=DateTime.parse(val).toIso8601String();
+																																																				return null;
+																																																			},
+																																																			onSaved: (val) { 
+																																																				print("hi");
+																																																				print(DateTime.parse(val).toIso8601String());
+																																																				viewmodel.appointmentDate=DateTime.parse(val).toIso8601String();
+																																																			},
+																																																			),
+																																																			Container(
+																																																					child:Row(
+																																																							children:[
+																																																								Icon(Icons.location_on, color: Colors.pink),
+																																																								SizedBox(width:10),
+																																																								Text(user.hospital),
+																																																							]
+																																																					)
+																																																			),
+																																																			Align(
+																																																					alignment: Alignment.bottomRight,
+																																																					child: ElevatedButton(
+
+																																																							onPressed: (){
+																																																								viewmodel.setAppointment(referrals[index].id, viewmodel.appointmentDate);
+																																																								Navigator.pushNamedAndRemoveUntil(
+																																																										context, '/homeview', ModalRoute.withName('/'),
+																																																										arguments: user);
+
+																																																							}, child: Text("Confirm")),
+																																																			)
+																																																					],
+																																																					),
+																																																					),
+																																																					);
+
+																																									});
+																																																										 },
+																																																										 style: ElevatedButton.styleFrom(
+																																																												 shape: RoundedRectangleBorder(
+																																																														 borderRadius: BorderRadius.circular(15.0),
+																																																														 side: BorderSide(color: Colors.black38),
+																																																												 ),
+																																																												 primary: Colors.white,
+																																																												 onPrimary: Colors.black,
+																																																										 ),
+																																																								 child: Text("Reschedule", style: TextStyle(color: Colors.black38)),
+																																																								 )
+
+																																																																				   ],
 																																																																				 ),
 																																														 if(referrals[index].status=="Completed")
 																																															 Row(
